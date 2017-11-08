@@ -14,7 +14,7 @@ class LaplazePlayer extends Player
     protected $mySide;
     protected $opponentSide;
     protected $result;
-    protected $oponent_last_3 = array();
+    protected $opponent_last_3 = array();
     protected $third_last = 0;
     protected $sec_last = 0;
     protected $last = 0;
@@ -22,8 +22,8 @@ class LaplazePlayer extends Player
 
 
     function __construct() {
-        for ($i = 0; $i <= $size * $size; $i++) {
-            $this->oponent_last_3[$i] = 0;
+        for ($i = 0; $i < 27; $i++) {
+            $this->opponent_last_3[$i] = 0;
         }
     }
 // Rock: 1
@@ -33,14 +33,14 @@ class LaplazePlayer extends Player
     public function getChoice()
     {
 
-        if ($this->result->getNbRound() == 3) {
+        if ($this->result->getNbRound() == $this->size) {
             $tmpChoices = $this->result->getChoicesFor($this->opponentSide);
             $this->third_last = $tmpChoices[0];
             $this->sec_last = $tmpChoices[1];
             $this->last = $tmpChoices[2];
-        } else if ($this->result->getNbRound() > 3) {
-            $this->third_last = $sec_last;
-            $this->sec_last = $last;
+        } else if ($this->result->getNbRound() > $this->size) {
+            $this->third_last = $this->sec_last;
+            $this->sec_last = $this->last;
             $this->last = $this->result->getLastChoiceFor($this->opponentSide);
         } else {
             return parent::rockChoice();
@@ -49,22 +49,22 @@ class LaplazePlayer extends Player
         $index = 0; //index to increment
         switch ($this->third_last) {
             case 'scissors':
-                $index = $this->size * $this->size;
+                $index = $this->size * $this->size;//9
                 break;
             case 'paper':
-            $index = $this->size * $this->size * 2;
+            $index = $this->size * $this->size * 2;//18
                 break;
         }
         switch ($this->sec_last) {
             case 'scissors':
-                $index = $index + $this->size;
+                $index = $index + $this->size;//12 or 21
                 break;
             case 'paper':
-            $index = $index + ($this->size * 2);
+            $index = $index + ($this->size * 2); // 15 or 24
                 break;
         }
-        $res = $index; //where we will get the proba
-        switch ($sec_last) {
+        $res = $index; //where we will get the proba. max value = 24
+        switch ($this->sec_last) {
             case 'scissors':
                 $index = $index + 1;
                 break;
