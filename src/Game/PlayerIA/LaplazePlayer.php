@@ -22,7 +22,7 @@ class LaplazePlayer extends Player
 
 
     function __construct() {
-        for ($i = 0; $i < 27; $i++) {
+        for ($i = 0; $i < 81; $i++) {
             $this->opponent_last_3[$i] = 0;
         }
     }
